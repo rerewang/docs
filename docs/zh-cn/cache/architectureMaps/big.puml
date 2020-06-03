@@ -1,0 +1,26 @@
+@startuml
+
+rectangle WebCluster{
+    node WebServer1
+    node WebServer2
+}
+
+rectangle DataAccessLayer
+
+rectangle DBCluster{
+    database DBNode1
+    database DBNode2
+}
+
+rectangle CacheCluster{
+    node CacheServer1
+    node CacheServer2
+}
+
+WebCluster -down-> DataAccessLayer
+WebCluster -down-> CacheCluster
+DataAccessLayer -down-> DBCluster
+
+
+
+@enduml

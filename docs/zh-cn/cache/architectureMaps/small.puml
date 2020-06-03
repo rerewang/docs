@@ -1,0 +1,8 @@
+@startuml
+
+rectangle webServer
+database database
+
+webServer --|> database
+
+@enduml
