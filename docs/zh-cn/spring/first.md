@@ -1,6 +1,6 @@
 # Hello Spring
 ## 引入新的maven plugin
-- lombok 注解相关
+- lombok 注解 ？
 ```java
 package com.rere.learn;
 
@@ -26,9 +26,11 @@ public class LearnApplication {
 学习知识点：
 - @RequestMapping 注解路由
 - @RestController Spring的RestController注解
+- 什么是Bean?
 
-# Spring单数据源配置
-## 引入新的maven plugin
+# 数据源
+## 单数据源配置
+### 引入新的maven plugin
 - h2   java内置的简单数据库
 - jdbc 用于执行sql语句的java API
 ```java
@@ -71,6 +73,41 @@ public class DataSourceDemoApplication implements CommandLineRunner {
 
 ```
 学习知识点：
-- 新注解
-	- @RequestMapping 注解路由
-	- @RestController Spring的RestController注解
+- @Slf4j 类的注解，日志API
+- @Autowired 自动装载
+- CommandLineRunner 接口，用于构建SpringBoot项目时预先数据的加载
+
+## SpringBoot多数据源配置
+@todo
+### 好用的数据库连接池
+@todo
+#### HikariCP
+- 快 
+
+#### Alibaba Druid
+- 监控
+
+## 使用Spring JDBC访问数据库
+### spring-jdbc
+- core，JdbcTemplate等相关核心接口和类
+- DataSource 数据源相关的辅助类
+- object 将基本的JDBC操作封装成对象
+- support 错误码等相关的辅助类
+
+### 新注解
+- @Component  通用注解 通用Bean
+- @Resposity  数据仓库
+- @Service
+- @Controller
+
+### JdbcTemplate
+- query
+- queryForObject
+- queryForList
+- update
+- execute
+- batchUpdate
+
+```java
+
+```
