@@ -1,6 +1,7 @@
 # Hello Spring
 ## 引入新的maven plugin
-- lombok 注解 ？
+- lombok 注解 @todo
+
 ```java
 package com.rere.learn;
 
@@ -23,6 +24,7 @@ public class LearnApplication {
     }
 }
 ```
+
 学习知识点：
 - @RequestMapping 注解路由
 - @RestController Spring的RestController注解
@@ -33,6 +35,7 @@ public class LearnApplication {
 ### 引入新的maven plugin
 - h2   java内置的简单数据库
 - jdbc 用于执行sql语句的java API
+
 ```java
 package com.rere.learn;
 
