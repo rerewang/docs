@@ -115,6 +115,10 @@ public class DataSourceDemoApplication implements CommandLineRunner {
 - batchUpdate
 - simpleJdbcInsert
 	- executeAndReturnKey  执行并返回主键
+- BatchPreparedStatementSetter
+- NamedParameterJdbcTemplate
+- SqlParameterSourceUtils
+
 
 ### RowMapper接口
 **jdbc从数据库查询出来的记录保存在ResultSet中，需要将结果一条条获取并设置到实体类中，RowMapper就是方便做这些事情的**
@@ -143,13 +147,18 @@ package com.rere.learn.jdbcDemo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -162,16 +171,12 @@ public class FooDao {
     @Autowired
     private SimpleJdbcInsert simpleJdbcInsert;
 
-    public void createTable() {
-        jdbcTemplate.execute("create table foo (\n" +
-                "    \"id\" integer auto_increment,\n" +
-                "    \"bar\" varchar(20)\n" +
-                ")");
-    }
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public void insert() {
-//        String bar = "bar1";
-//        jdbcTemplate.update("insert into foo (bar) value (?)", bar);
+        String bar = "bar1";
+        jdbcTemplate.update("insert into foo (bar) value (?)", bar);
 
         HashMap<String, String> row = new HashMap<>();
         row.put("bar", "bar2");
@@ -191,7 +196,6 @@ public class FooDao {
 
         //list object
         List<Foo> fooList = jdbcTemplate.query("select * from foo", new RowMapper<Foo>() {
-        	//自定义RowMapper
             @Override
             public Foo mapRow(ResultSet rs, int rowNum) throws SQLException{
                 return Foo.builder()
@@ -201,6 +205,26 @@ public class FooDao {
             }
         });
         fooList.forEach(foo -> log.info("Foo is {}", foo));
+    }
+
+    public void batchInsert() {
+        jdbcTemplate.batchUpdate("insert into foo (bar) value (?)", new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
+                preparedStatement.setString(1, "bar" + i);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return 2;
+            }
+        });
+
+        List<Foo> list = new ArrayList<>();
+        list.add(Foo.builder().id(100L).bar("bar100").build());
+        list.add(Foo.builder().id(101L).bar("bar101").build());
+        namedParameterJdbcTemplate.batchUpdate("insert into foo (id, bar) value (:id, :bar)",
+                SqlParameterSourceUtils.createBatch(list));
     }
 }
 ```
@@ -249,6 +273,12 @@ public class JdbcDemoApplication {
         return "insert";
     }
 
+    @RequestMapping("/batchInsert")
+    public String batchInsert() {
+        fooDao.batchInsert();
+        return "batchInsert";
+    }
+
     @RequestMapping("/list")
     public String list() {
         fooDao.list();
@@ -259,12 +289,6 @@ public class JdbcDemoApplication {
     public String source() throws SQLException {
         Connection conn = dataSource.getConnection();
         return conn.toString();
-    }
-
-    @RequestMapping("/create_table")
-    public String create() {
-        fooDao.createTable();
-        return "created";
     }
 }
 ```
