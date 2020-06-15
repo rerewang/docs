@@ -1,36 +1,4 @@
-# Hello Spring
-## 引入新的maven plugin
-- lombok 注解 @todo
-
-```java
-package com.rere.learn;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@SpringBootApplication
-@RestController
-public class LearnApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(LearnApplication.class, args);
-    }
-
-    @RequestMapping("/hello")
-    public String hello() {
-        return "Hello Spring";
-    }
-}
-```
-
-学习知识点：
-- @RequestMapping 注解路由
-- @RestController Spring的RestController注解
-- 什么是Bean?
-
-# 数据源
+# jdbc
 ## 单数据源配置
 ### 引入新的maven plugin
 - h2   java内置的简单数据库
@@ -42,7 +10,8 @@ package com.rere.learn;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
+import org.sprin
+gframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
@@ -292,3 +261,15 @@ public class JdbcDemoApplication {
     }
 }
 ```
+
+## 事务抽象
+[Spring 事务传播特性和隔离级别](transaction.md)
+[Spring 事务机制](https://www.jianshu.com/p/d42b8c9aa950)
+
+
+## jdbc异常抽象
+- DataAccessException  spring将数据库异常转换为DataAccessException
+- SQLErrorCodeSQLExceptionTranslator   spring使用SQLErrorCodeSQLExceptionTranslator解析数据库异常错误码
+- ErrorCode
+	- 可以自定义
+
