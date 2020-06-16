@@ -37,8 +37,10 @@
 - web知识
 - docker
 
-## 引入新的maven plugin
-- lombok 注解 @todo
+
+## hello
+- [常用的注解](zh-cn/spring/annotation.md)
+- [actuator](zh-cn/spring/actuator.md)
 
 ```java
 package com.rere.learn;

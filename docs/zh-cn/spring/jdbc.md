@@ -263,7 +263,7 @@ public class JdbcDemoApplication {
 ```
 
 ## 事务抽象
-[Spring 事务传播特性和隔离级别](transaction.md)
+[Spring 事务传播特性和隔离级别](zh-cn/spring/ransaction.md)
 [Spring 事务机制](https://www.jianshu.com/p/d42b8c9aa950)
 
 

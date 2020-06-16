@@ -3,7 +3,7 @@
 * [DDD](zh-cn/DDD/start)
 
 ## Spring
-* [Hello Spring](zh-cn/spring/hellop)
+* [Hello Spring](zh-cn/spring/hello)
 * [jdbc](zh-cn/spring/jdbc)
 * [ORM](zh-cn/spring/orm)
 
