@@ -111,3 +111,5 @@ public class ProgrammaticTransactionDemoApplication implements CommandLineRunner
 ```
 
 ## 声明式事务
+- @EnableTransactionManagement
+- @Transactional(rollbackFor=)
