@@ -1,8 +1,6 @@
-# Nosql
+# Mongo
 
-
-## Mongo
-### docker 运行 mongo
+## docker 运行 mongo
 ```shell
 #获取镜像
 docker pull mongo
@@ -13,7 +11,7 @@ docker exec -it mongo bash
 #链接到mongo (容器中执行)
 mongo -u username -p password
 ```
-### mongo命令
+## mongo命令
 数据库信息
 ```mongo
 ```
@@ -53,5 +51,3 @@ mongodump --host IP --port 端口 -u 用户名 -p 密码 -d 数据库 -o 文件�
 #导入
 mongoorestore --host --port -d 文件路径
 ```
-
-### 在spring中使用 mongo
