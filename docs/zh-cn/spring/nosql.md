@@ -13,5 +13,17 @@ docker exec -it mongo bash
 #链接到mongo (容器中执行)
 mongo -u username -p password
 ```
-### 在spring中使用 mongo
+### mongo命令
+数据库信息
+```mongo
+show dbs
+use dbname
+```
+数据库操作
+```mongo
+use dbname	//创建数据库
+db.dropDatabase()	//删除当前数据库
+db.test1.insert(json)	//插入记录
+```
 
+### 在spring中使用 mongo
