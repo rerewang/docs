@@ -12,9 +12,6 @@ docker exec -it mongo bash
 mongo -u username -p password
 ```
 ## mongo命令
-数据库信息
-```mongo
-```
 数据库操作
 ```mongo
 #使用数据库/创建数据库，当你使用一个不存在的mongo数据库时,就自动创建了一个mongo数据库
@@ -28,6 +25,10 @@ db 	//查看当前所使用的数据库名
 db.stats()	//查看当前数据库状态
 db.version()	//查看当前数据库版本
 
+#创建用户
+db.createUser( {user: "user_name",pwd: "password",roles: [ { role: "role", db: "db_name" } ]})
+#查看用户
+show users
 
 #创建集合
 db.createCollection(collection_name, { size : ..., capped : ..., max : ... } )
