@@ -23,5 +23,5 @@ db.createUser({
 ```
 #### 配置
 ```JAVA
-
+spring.data.mongodb.uri=mongodb://springbucks:springbucks@localhost:27017/springbucks
 ```
