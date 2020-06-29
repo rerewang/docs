@@ -174,8 +174,24 @@ Coffee espresso = Coffee.builder().name("espresso")
                 .build();
 coffeeRepository.save(espresso);
 //查询
-
 ```
+
+#### ExampleMatcher(匹配器) 与 Example（实例）
+```JAVA
+	//Optional可以包含Null或指定的类型
+    public Optional<Coffee> findOneCoffee(String name) {
+    	//创建查询器
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("name", exact().ignoreCase());
+        //创建实例
+        Example ex = Example.of(Coffee.builder().name(name).build(), matcher);
+        //查询
+        Optional<Coffee> coffee = coffeeRepository.findOne(ex);
+        return coffee;
+    }
+```
+
+
 
 ## MyBatis
 - 一套优秀的持久层框架

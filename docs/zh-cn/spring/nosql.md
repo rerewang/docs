@@ -44,4 +44,7 @@ redis.maxIdle=5
 redis.testOnBorrow=true
 ```
 
-### 注解
+#### JedisPool
+#### jedisPoolConfig
+#### Jedis 方法
+
