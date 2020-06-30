@@ -43,8 +43,18 @@ redis.maxTotal=5
 redis.maxIdle=5
 redis.testOnBorrow=true
 ```
+#### 使用
+##### JedisPool
+##### jedisPoolConfig
+##### Jedis 方法
 
-#### JedisPool
-#### jedisPoolConfig
-#### Jedis 方法
+#### Jedis哨兵模式
+##### JedisSentinelPool
+initSentinel()
+initPoll(master)
+
+#### Jedis集群模式
+##### JedisCluster
+只支持从master做读写，如果要读写分离，需要定制。
+
 
