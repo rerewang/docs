@@ -1,5 +1,29 @@
 # Nosql
 
+## Spring的缓存抽象
+为不同的缓存提供一层抽象 （使用了AOP）
+- 为java方法增加缓存，缓存执行结果
+- 支持ConcurrentMap、EnCache、Caffeine、 JCache(JSR-107)
+- 接口
+	- org.springframework.cache.Cache
+	- org.springframework.cache.CacheManger
+
+### 依赖
+```JAVA
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
+```
+
+### 注解
+- @EnableCaching
+	- @Cacheable
+	- @CacheEvict  	//缓存清理
+	- @CachePut		//缓存设置
+	- @Caching 		//
+	- @CacheConfig	//对缓存做设置
+
 
 ## Mongo
 ### 在spring中使用 mongo
