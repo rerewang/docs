@@ -17,12 +17,18 @@
 ```
 
 ### 注解
-- @EnableCaching
-	- @Cacheable
-	- @CacheEvict  	//缓存清理
-	- @CachePut		//缓存设置
-	- @Caching 		//
-	- @CacheConfig	//对缓存做设置
+- @EnableCaching	//开启缓存
+	- proxyTargetClass 是否使用CGLIB代理，而不是默认的java接口代理。默认是false。决定是基于接口还是基于类的代理被创建
+	- mode  缓存的代理模式，AdviceMode.PROXY(默认) / AdviceMode.ASPECTJ. 
+	- order 缓存 
+- @Cacheable	//在方法前使用，将运行结果缓存；当标记在一个类上，表示该类的所有方法都支持缓存
+	- *当一个支持缓存的方法在对象内部被调用时，是不会触发缓存的*
+	- value 缓存的名称，在spring配置文件中定义，必须指定至少一个
+- @CacheEvict  	//缓存清理
+- @CachePut		//缓存设置，不会检查缓存是否存在，每次都会执行该方法，并将结果写入指定的缓存中
+- @Caching 		//可以同时指定多个SpringCache相关的注解
+	- 三个属性 cacheable、put、evict 分别用于指定 @Cacheable、@CachePut、@Caching
+- @CacheConfig	//对缓存做设置
 
 
 ## Mongo
