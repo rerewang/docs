@@ -61,6 +61,24 @@ spring.data.mongodb.uri=mongodb://springbucks:springbucks@localhost:27017/spring
 
 
 ## Redis
+### 使用redis做Spring Cache
+#### 依赖
+```JAVA
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+#### 配置
+```JAVA
+spring.cache.type=redis
+spring.cache.cache-names=coffee
+spring.cache.redis.time-to-live=500
+spring.cache.redis.cache-null-values=false
+
+spring.redis.host=localhost
+```
+
 ### Jedis
 - Jedis 不是线程安全的
 - 使用JedisPool获取Jedis实例
@@ -87,4 +105,4 @@ initPoll(master)
 ##### JedisCluster
 只支持从master做读写，如果要读写分离，需要定制。
 
-
+### Lettuce
