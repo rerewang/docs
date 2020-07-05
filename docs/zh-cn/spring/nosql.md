@@ -59,6 +59,10 @@ spring.data.mongodb.uri=mongodb://springbucks:springbucks@localhost:27017/spring
 #### Converter
 @todo
 
+#### reactive 方式连接mongo
+[reactive编程](zh-cn/dao/reactive.md)
+@todo
+
 
 ## Redis
 ### 使用redis做Spring Cache
@@ -82,7 +86,7 @@ spring.redis.host=localhost
 ### Jedis
 - Jedis 不是线程安全的
 - 使用JedisPool获取Jedis实例
-- 直接使用Jedis中的方法
+
 
 #### 配置
 ```JAVA
@@ -106,3 +110,7 @@ initPoll(master)
 只支持从master做读写，如果要读写分离，需要定制。
 
 ### Lettuce
+
+#### reactive 方式连接redis
+[reactive编程](zh-cn/dao/reactive.md)
+@todo
