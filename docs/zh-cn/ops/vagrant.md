@@ -42,6 +42,7 @@ vagrant基于Ruby语言开发，vagrant是构建在虚拟化技术之上的 *虚
 ### rsync
 
 ## Vagrantfile
+- Vagrant.configure("2") do |config| ... end	配置版本
 - config.vm.box 	指定使用哪个box
 - config.vm.hostname 	机器主机名
 - config.vm.network 	虚拟机网络设置
