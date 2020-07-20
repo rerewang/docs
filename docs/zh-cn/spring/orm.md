@@ -290,3 +290,11 @@ public interface CoffeeMapper {
     Coffee findById(@Param("id") Long id);
 }
 ```
+
+### MyBatis Generator
+#### 为什么没有生成 src/main/resources/mapper
+- 需要实现保证目录存在
+
+#### 如何将生成的内容与手写的内容分开
+- 生成的内容放到 auto 目录下
+- 手写的内容放到 manual 目录下
