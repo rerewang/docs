@@ -64,6 +64,39 @@ ConditionEvaluationReportLoggingListener
 @todo
 
 ## 起步依赖
+### 关于 Maven 依赖管理的一些小技巧
+- 了解你的依赖
+	- mvn dependency:tree
+	- IDEA Maven Helper 插件
+- 排除特定依赖
+	- exclusion
+- 统一管理依赖
+	- dependencyMangement
+	- Bill of Materials - bom
+
+官方Starters
+- spring-boot-starter-*
+
+### Starter Dependencies
+- 直接面向功能
+- 一站获得所以相关依赖，补在复制粘贴
+
+### 动手实现自己的起步依赖
+#### 主要内容
+- autoconfigure模块，包含自动配置代码
+- starter模块，包含指向自动配置模块的依赖及其他相关依赖
+
+#### 命名方式
+- xxx-spring-boot-autoconfigure
+- xxx-spring-boot-starter
+
+#### 一些注意事项
+- 不要使用 spring-boot 作为依赖的前缀
+- 不要使用 spring-boot 的配置命名空间
+- starter 中仅添加必要的依赖
+- 声明对 spring-boot-starter 的依赖
+
+
 
 ## Actuator
 
