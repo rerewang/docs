@@ -28,3 +28,25 @@ Project Lombok 能够自动迁入IDE 和 构建工具
 - @Data 是以下注解的集合 @ToString @Getter @Setter @EqualsAndHashCode @RequiredArgsConstructor
 - @Builder  建造者模式
 - @Slf4j / @CommonsLog / @Log4j2
+
+## 条件注解
+(spring 4)
+- @Conditional
+- 类条件
+	- @ConditionalOnClass
+	- @ConditionalOnMissingClass
+- 属性条件
+	- @ConditionalOnProperty
+- Bean条件
+	- @ConditionalOnBean
+	- @ConditionalOnMissingBean
+	- @ConditionalOnSingleCondidate
+- 资源条件
+	- @ConditionalOnResource
+- Web应用条件
+	- @ConditionalOnWebApplication
+	- @ConditionalOnNotWebApplication
+- 其他条件
+	- @ConditionalOnExpression
+	- @ConditionalOnJava
+	- @ConditionalOnJndi

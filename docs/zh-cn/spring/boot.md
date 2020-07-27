@@ -22,6 +22,46 @@
 - Actuator
 
 ## 自动配置
+- 基于添加的 JAR 依赖自动对 Spring Boot 应用程序进行配置
+- spring-boot-autoconfiguration
+
+### 开启自动配置
+- @EnableAutoConfiguration
+	- exclude = class<?>[]
+- @SpringBootApplication
+
+### 实现原理
+[自动配置原理](https://www.cnblogs.com/jiadp/p/9276826.html)
+@EnableAutoConfiguration
+- AutoConfigurationImportSelector
+- MATE-INF/spring.factories
+	- org.springframework.boot.autoconfiguration.EnableAutoConfiguration
+
+### 了解自动配置的情况
+观察自动配置的判断结果
+- --debug (run 时 cli)
+ConditionEvaluationReportLoggingListener
+- Positvie matches (匹配到的)
+- Negative matches (没匹配到的)
+- Exclusions (排除)
+- Unconditional classes (无条件配置)
+
+### 动手实现自己的自动配置
+#### 主要工作
+- 编写 Java Config
+	- @Configuration
+- 添加条件
+	- @Conditional
+- 定位自动配置
+	- MATE-INF/spring.factories
+
+#### 执行顺序
+- @AutoConfigurationBefore
+- @AutoConfigurationAfter
+- @AutoConfigurationOrder
+
+#### 在低版本下实现自动配置
+@todo
 
 ## 起步依赖
 
