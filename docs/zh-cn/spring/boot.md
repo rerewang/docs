@@ -63,6 +63,70 @@ ConditionEvaluationReportLoggingListener
 #### 在低版本下实现自动配置
 @todo
 
+## Spring Boot 外部化配置
+### 外部化配置加载顺序
+- 开启DevTools时，~/.spring-boot-devtools.properties
+- 测试用例上的@TestPropertySource注解。
+- 测试用例上的@SpringBootTest#properties注解。
+- 命令行参数 【常用】
+- 来自SPRING_APPLICATION_JSON的属性（环境变量或系统属性中内嵌的内联JSON）
+- ServletConfig初始化参数
+- ServletContext初始化参数
+- 来自于java:comp/env的JNDI属性
+- Java系统属性（System.getProperties()）【常用】
+- 操作系统环境变量【常用】
+- RandomValuePropertySource，只包含random.*中的属性
+- 没有打进jar包的Profile-specific应用属性（application-{profile}.properties和YAML变量）
+- 打进jar包中的Profile-specific应用属性（application-{profile}.properties和YAML变量）
+- 没有打进jar包的应用配置（application.properties和YAML变量）
+- 打进jar包中的应用配置（application.properties和YAML变量）
+- @Configuration类上的@PropertySource注解
+- 默认属性（使用SpringApplication.setDefaultProperties指定）
+
+### 配置文件所在位置
+#### 默认位置
+- ./config
+- ./
+- CLASSPATH 中的 /config
+- CLASSPATH 中的 /
+
+#### 修改名字或路径
+- spring.config.name
+- spring.config.location
+- spring.config.additional-location
+
+### PropertySource
+#### 添加 PropertySource
+- <context:property-placeholder>
+- PropertySourcePlaceholderConfigurer
+	- - PropertyPlaceholderConfigurer
+- @PropertySource
+- @PropertySources
+- Spring Boot 中的 @ConfigurationPorperties
+	- 可以将属性绑定到结构化对象上
+	- 支持 Relaxed Binding
+	- 支持安全的类型转换
+	- @EnableConfigurationPorperties
+
+#### 定制 PropertySource
+可以用来做自己的配置中心
+##### 主要步骤
+- 实现 PropertySource<T>
+- 从 Environment 取得 PropertySource
+- 将自己的 PropertySource 添加到合适的位置
+
+##### 切入位置
+- EnvironmentPostProcessor
+- BeanFactoryPostProcessor
+
+#### Relaxed Binding
+|命名风格|使用范围|示例|
+|短划线分隔|Properties文件/Yaml文件/系统属性|geektime.spring-boot.first-demo|
+|驼峰分隔|同上|geektime.springBoot.firstDemo|
+|下划线分隔|同上|geektime.spring_boot.first_demo|
+|全大写，下划线分隔|环境变量|GEEKTIME_SPRINGBOOT_FIRSTDEMO|
+
+
 ## 起步依赖
 ### 关于 Maven 依赖管理的一些小技巧
 - 了解你的依赖
@@ -96,9 +160,9 @@ ConditionEvaluationReportLoggingListener
 - starter 中仅添加必要的依赖
 - 声明对 spring-boot-starter 的依赖
 
-
-
 ## Actuator
+[Actuator](zh-cn/spring/actuator)
+
 
 ## Spring Boot CLI
 

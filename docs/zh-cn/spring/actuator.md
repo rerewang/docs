@@ -1,10 +1,83 @@
 # Actuator
+## 概览
+- 目的
+	- 监控并管理应用程序
+- 访问方式
+	- HTTP
+	- JMX
+- 依赖
+	- spring-boot-starter-actuator
 
-## 好用的endpoint
-- health	健康检查
-- beans		列出所有beans
-- mappings	查看web的url映射
-- env		查看环境信息
 
-## 解禁所有的endpoint
-management.endpoints.web.exposure.include=*
+### 常用的 Endpoint
+|ID|说明|默认开启|默认HTTP|默认JMX|
+|beans|显示容器中的 Bean 列表|Y|N|Y|
+|caches|显示应用中的缓存|Y|N|Y|
+|conditions|显示配置条件的计算情况|Y|N|Y|
+|configprops|显示@ConfigurationProperties的信息|Y|N|Y|
+|env|显示ConfigurableEnvironment中的属性|Y|N|Y|
+|helath|显示健康检查信息|Y|Y|Y|
+|httptrace|显示HTTP Trace信息|Y|N|Y|
+|info|显示设置好的应用信息|Y|Y|Y|
+
+|logger|显示并更新日志配置|Y|N|Y|
+|metrics|显示应用的度量信息|Y|N|Y|
+|mappings|显示所有的 @RequestMapping 信息|Y|N|Y|
+|scheduledtasks|显示所有的任务调度信息|Y|N|Y|
+|shutdown|优雅地关闭应用程序|N|N|Y|
+|threaddump|执行 Thread Dump|Y|N|Y|
+|heapdump|返回 HeapDump，格式为 HPROF|Y|N|N/A|
+|prometheus|返回可被 Prometheus 抓取的信息(需要安装相关依赖)|Y|N|N/A|
+
+## 如何访问 Endpoint
+#### HTTP 访问
+- /actuator/<id>
+
+#### 端口与路径
+- management.server.address=
+- management.server.port=
+- management.endpoints.web.base_path=/actuator
+- management.endpoints.web.path-mapping.<id>=路径
+
+#### 开启、关闭与暴露
+- management.endpoints.<id>.enabled=true
+- management.endpoints.<id>.enabled-by-default=false
+- management.endpoints.web.exposure.include=helath, info
+- management.endpoints.web.exposure.exclude=
+- management.endpoints.jmx.exposure.include=*
+- management.endpoints.jmx.exposure.exclude=
+
+## Health Indicator
+### Spring Boot 的 Health Indicator
+- 目的
+	- 检查应用程序的运行状态
+- 状态
+	- DOWN - 503
+	- OUT_OF_SERVICE - 503
+	- UP - 200
+	- UNKOWN - 200
+- 机制
+	- 通过 HealthIndicatorRegistry 收集信息
+	- HealthIndicator实现具体检查逻辑
+- 配置项
+	- management.health.default.enabled=true|false
+	- management.health.<id>.enabled=true
+	- management.endpoints.health.show-details=never|when-authorized|always
+
+#### 内置 Health Indicator 清单
+|Name	|Description|
+|CassandraHealthIndicator	|Checks that a Cassandra database is up.|
+|DiskSpaceHealthIndicator	|Checks for low disk space.|
+|DataSourceHealthIndicator	|Checks that a connection to DataSource can be obtained.|
+|ElasticsearchHealthIndicator	|Checks that an Elasticsearch cluster is up.|
+|JmsHealthIndicator	|Checks that a JMS broker is up.|
+|MailHealthIndicator	|Checks that a mail server is up.|
+|MongoHealthIndicator	|Checks that a Mongo database is up.|
+|RabbitHealthIndicator	|Checks that a Rabbit server is up.|
+|RedisHealthIndicator	|Checks that a Redis server is up.|
+|SolrHealthIndicator	|Checks that a Solr server is up.|
+
+### 自定义 Health Indicator
+- 实现 HealthIndicator 接口
+- 根据自定义检查逻辑返回对应Health状态
+	- Health中包含状态和详细描述信息
