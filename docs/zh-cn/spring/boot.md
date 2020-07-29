@@ -163,6 +163,35 @@ ConditionEvaluationReportLoggingListener
 ## Actuator
 [Actuator](zh-cn/spring/actuator)
 
+## Web 容器
+### 内置 Web 容器
+- 可选容器列表
+	- spring-boot-starter-tomcat
+	- spring-boot-starter-jetty
+	- spring-boot-starter-undertow
+	- spring-boot-starter-reactor-netty
+- 配置
+	- 端口
+		- server.port
+		- server.address
+	- 压缩
+		- server.compression.enabled
+		- server.compression.min-response-size
+		- server.compression.mine-types
+	- Tomcat 特定配置
+		- server.tomcat.max-connections=10000
+		- server.tomcat.max-http-post-size=2MB
+		- server.tomcat.max-swallow-size=2MB
+		- server.tomcat.max-threads=200
+		- server.tomcat.max-spare-threads=10
+	- 错误处理
+		- server.error.path=/error
+		- server.error.include-exception=false
+		- server.error.include-stacktrace=nerver
+		- server.error.whitelabel.enable=true
+	- 其它
+		- server.use-forward-headers
+		- server.servlet.session.timeout
 
 ## Spring Boot CLI
 
