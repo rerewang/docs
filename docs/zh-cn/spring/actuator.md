@@ -81,3 +81,53 @@
 - 实现 HealthIndicator 接口
 - 根据自定义检查逻辑返回对应Health状态
 	- Health中包含状态和详细描述信息
+
+## Micrometer
+### 认识 Micrometer
+#### 特性
+- 多维度度量
+	- 支持 Tag
+- 预置大量探针
+	- 缓存、类加载器、GC、CPU利用率、线程池...
+- 与 Spring 深度整合
+- 支持多种监控系统
+	- Dimensional(象限)
+		- AppOptics, Atlas, Azure Monitor, Cloudwatch, Datadog, Datadog StatsD, Dynatrace, Elastic, Humio, Influx, KairosDB, New Relic, Prometheus, SignalFx, Sysdig StatsD, Telegraf StatsD, Wavefront
+	- Hierarchical(分级)
+		- Graphite, Ganglia, JMX, Etsy StatsD
+
+#### 一些核心度量指标
+- 核心接口
+	- Meter
+- 实现
+	- Gauge, TimeGuage
+	- Timer, LongTaskTimer, FunctionTimer
+	- Counter, FunctionCounter
+	- DistributionSummary (分布统计)
+
+### Micrometer in Spring Boot 2.x
+- 一些URL
+	- /actuator/metrics
+	- /actuator/prometheus
+- 一些配置项
+	- management.metrics.export.*
+	- management.metrics.tag.*
+	- management.metrics.enable.*
+	- management.metrics.distribution.*
+	- management.metrics.web.server.auto-time-requests (web耗时请求监控)
+- 核心度量项
+	- JVM、CPU、文件句柄数、日志、启动时间
+- 其他度量项
+	- Spring MVC、Spring WebFlux
+	- Tomcat、Jersey JAX-RS
+	- RestTemplate、WebClient
+	- 缓存、数据源、Hibernate
+	- Kafka、RabbitMQ
+
+### 自定义度量指标
+- 通过 MeterRegistry 注册 Meter
+- 提供 MeterBinderBean 让 SpringBoot 自动绑定
+- 通过 MeterFilter 进行定制
+
+
+
