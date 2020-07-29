@@ -129,5 +129,32 @@
 - 提供 MeterBinderBean 让 SpringBoot 自动绑定
 - 通过 MeterFilter 进行定制
 
+## Spring Boot Admin
+### 概览
+-目的
+	- 为 Spring Boot 应用程序提供一套管理界面
+- 主要功能
+	- 集中展示应用程序 Actuator 相关的内容
+	- 变更通知 
 
+### 快速上手
+- 服务端
+	- de.codecentric:spring-boot-admin-starter-server:2.1.3
+	- @EnableAdminServer
+- 客户端
+	- de.codecentric:spring-boot-admin-starter-client:2.1.3
+	- 配置服务端及 Endpoint
+		- spring.boot.admin.client.url=http://localhost:8080
+		- management.endpoints.web.exposure.exclude=*
 
+### 安全控制
+- 相关依赖
+	- spring-boot-starter-security
+- 服务端配置
+	- spring.security.user.name
+	- spring.security.user.password
+- 客户端配置
+	- spring.boot.admin.client.user.name
+	- spring.boot.admin.client.user.password
+	- spring.boot.admin.client.instance.metadata.user.name
+	- spring.boot.admin.client.instance.metadata.user.password
