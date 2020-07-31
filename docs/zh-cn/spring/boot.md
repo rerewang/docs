@@ -193,7 +193,112 @@ ConditionEvaluationReportLoggingListener
 		- server.use-forward-headers
 		- server.servlet.session.timeout
 
+### 编程方式
+- WebServerFactoryCustomizer<T>
+	- TomcatServletWebServerFactory
+	- JettyServletWebServerFactory
+	- UndertowServletWebServerFactory
+
+### 配置 Web 容器支持 HTTPS
+#### 配置服务端支持HTTPS 
+- 通过参数进行配置
+	- server.port=8443
+	- server.ssl.*
+		- server.ssl.key-store
+		- server.ssl.key-type, JKS或PKCS12
+		- server.ssl.key-password=secret
+- 生成证书文件
+	- 命令
+		- keytool -genkey -alias 别名 -storetype仓库类型 -keyalg 算法 -keysize 长度 -keystore 文件名 -validity 有效期
+	- 说明
+		- 仓库类型，JKS、JCEKS、PKCS12 等
+		- 算法类型，RSA、DSA 等
+		- 长度，例如2048
+
+#### 配置客户端支持 HTTPS
+- 配置 HttpClient (>=4.4)
+	- SSLContextBuilder 构造 SSLContext
+	- setSSLHostnameVerifier(new NoopHostnameVerifier())
+- 配置 RequestFactory
+	- HttpComponentsClientHttpRequestFactory
+		- setHttpClient
+
+#### 配置支持 HTTP/2
+- 前提条件
+	- Java >= JDK 9
+	- Tomcat >= 9.0.0
+	- Sping Boot 不支持 h2c，需先配置 SSL
+- 配置项
+	server.http2.enabled
+- HTTP 库选择
+	- OkHttp (com.squareup.okhttp3:okhttp:3.14.0)
+		- OkHttpClient
+	- RestTemplate
+		- OkHttp3ClientHttpRequestFactory
+
 ## Spring Boot CLI
+### 关闭 Web 容器
+- 控制依赖
+	- 不添加 Web 相关依赖
+- 配置方式
+	- spring-main-web-application-type=none
+- 编程方式
+	- SpringApplication
+		- setWebApplicationType
+	- SpringApplicationBuilder
+		- web()
+	- 在调用 SpringApplication 的 run() 方法前设置 WebApplicationType
+
+### 常用工具类
+- 不同的 Runner
+	- ApplicationRunner
+		- 参数是 ApplicationArguments
+	- CommandLineRunner
+		- 参数是 String[]
+- 多个 Runner 执行顺序
+	- @order(1)
+- 返回码 
+	- ExitCodeGenerator
+		- ExitCodeEvent
+
+## 可执行Jar
+### 认识
+- 其中包含
+	- Jar 描述，META-INF / MANIFEST.MF
+	- Spring Boot Loader, org/springframework/boot/loader
+	- 项目内容, BOOT-INF/class
+	- 项目依赖, BOOT-INF/lib
+- 其中不包含
+	- JDK / JRE
+
+### 程序的入口
+- Jar 的启动类
+	- MANIFEST.MF
+		- Main-Class: org.springframework.boot.loader.jarLauncher
+- 项目的主类
+	- @SpringApplication
+	- MANIFEST.MF
+		- Start-Class: xxx.yyy.zzz
+
+### 如何创建可直接执行的Jar
+```JAVA
+<plugin>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-maven-plugin</artifactId>
+	<configuration>
+		<executable>true</executable>
+	</configuration>
+</plugin>
+```
+- 打包后的 Jar 可直接运行， 无需 java 命令
+- 可以在 .conf 中的同名文件中配置参数
+
+#### 默认脚本中的一些配置项
+|配置项|说明|备注|
+|CONBFIG_FOLDER|放置 .conf 的目录位置|只能放在环境变量中|
+|JAVA_OPTS|JVM启动时的参数|比如JVM的内存、GC|
+|RUN_ARGS|传给程序执行的参数||
 
 ## 部署
-
+### 将 SpringBoot 应用打包成 dokcer 镜像
+[docker](zh-cn/ops/docker.md)

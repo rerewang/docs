@@ -20,3 +20,22 @@
 
 ## 镜像相关
 ### 国内镜像加速
+
+### Docker镜像
+- 镜像是静态的只读模板
+- 镜像中包含构建docker容器的命令
+- 镜像是分层的
+- 通过Dockerfile来创建镜像
+
+### Dockerfile
+@todo
+
+### 通过Maven 构建 Docker 镜像
+- 准备工作
+	- 提供一个 Dockerfile
+	- 配置 dockerfile-maven-plugin 插件
+- 执行构建
+	- mvn package
+	- mvn dockerfile:build
+- 检查结果
+	- docker images
