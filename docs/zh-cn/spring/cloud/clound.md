@@ -56,9 +56,21 @@ Bootstrap 属性
 - spring.application.name=应用名
 - 配置中心相关
 
-## Spring Cloud Load Balancer
-### 如何获取服务地址
+### Spring Cloud Load Balancer
+#### 如何获取服务地址
 - EurekaClient
 	- getNextServerFromEureka
 - DiscoveryClient
 	- getInstances
+
+### Load Balancer Client
+RestTemplate 与 WebClient
+- @LoadBalanced
+- 实际是通过 ClientHttpRequestInterceptor 实现的
+	- LoadBalancerInterceptor
+	- LoadBalancerClient
+		- RibbonLoadBalancerClient
+
+## 服务熔断与限流
+
+
