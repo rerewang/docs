@@ -18,7 +18,7 @@
 	 	- Greenwich, Finchley, Edgeware...
 	 - SR - Service Release
 
-## 服务注册中心
+## 服务注册与发现
 ### Eureka
 - 什么是 Eureka
 	- Eureka 是 Aws 上定位服务的 REST 服务
@@ -63,14 +63,23 @@ Bootstrap 属性
 - DiscoveryClient
 	- getInstances
 
-### Load Balancer Client
-RestTemplate 与 WebClient
-- @LoadBalanced
-- 实际是通过 ClientHttpRequestInterceptor 实现的
-	- LoadBalancerInterceptor
-	- LoadBalancerClient
-		- RibbonLoadBalancerClient
+### Feign
+#### 认识
+- Feign
+	- 声明式 REST Web 服务客户端
+	- https://github.com/OpenFeign/feign
+- Spring Cloud OpenFeign
+	- spring-cloud-starter-openfseign
 
-## 服务熔断与限流
+#### 简单使用
+- 开启 Feign 支持
+	- @EnableFeignClients
+- 定义 Feign 接口
+	- @FeignClient
+- 简单配置
+	- FeignClientsCongiguration
+	- Encoder / Decoder / Logger / Contract / Client...
+- 通过配置定制 Feign
+	- @todo
 
-
+## 服务状态

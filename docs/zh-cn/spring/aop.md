@@ -9,3 +9,17 @@
 - Target object 	目标对象
 - AOP proxy 	AOP代理对象，可以使JDK动态代理，也可以是CGLIB代理
 - Weaving 	织入，连接切面与目标对象或类型创建代理的过程
+
+## 常用注解
+- @EnableAspectJAutoProxy
+- @Aspect
+- @Pointcut
+- @Before
+- @After / @AfterRuning / @AfterThrowing
+- @Around
+- @Order 
+
+## 实现
+```JAVA
+
+```

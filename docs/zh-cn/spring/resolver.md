@@ -22,3 +22,12 @@
 	- SessionRepositoryRequestWrapper
 	- SessionRepositoryFilter
 	- DelegatingFilterProxy
+
+##### 基于 Redis 的 HttpSession
+引入依赖
+- spring-session-data-redis
+基本配置
+- @EnableRedisHttpSession
+- 提供 RedisConnectionFactory
+- 实现 AbstractHttpSessionApplicationInitializer
+	- 配置 DelegatingFilterProxy
