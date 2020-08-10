@@ -32,6 +32,7 @@ https://hyperf.wiki/2.0/#/zh-cn/quick-start/overview
 	- @DeleteMapping
 
 ## 注解
+- [注解](https://hyperf.wiki/2.0/#/zh-cn/annotation)
 - PHP 语法上没有支持注解，只能基于约束好的规定去注释上解析
 - 注解只是元数据定义，单独使用时没有任何作用，需配合应用程序对其元数据进行利用才有作用
 
@@ -41,7 +42,28 @@ https://hyperf.wiki/2.0/#/zh-cn/quick-start/overview
 @todo
 
 ### 实现自定义注解
-@todo
+```PHP
+<?php
+namespace App\Annotation;
+
+use Hyperf\Di\Annotation\AbstractAnnotation;
+
+/**
+ * @Annotation()
+ * @Target({"CLASS", "METHOD"})
+ * Class Foo
+ * @package App\Annotation
+ * 注意：
+ *	1. 定义注解类时需要添加以上两个注解
+ *	2. 以上两个注解是全局的，无需 use 命名空间
+ *	3. Target 用来定义使用范围，注意只可以使用双引号
+ *  4. 继承 AbstractAnnotation 即可
+ */
+class Foo extends AbstractAnnotation
+{
+    public $bar = 'bar';
+}
+```
 
 ## DI
 - [DI](/zh-cn/dao/di.md)
@@ -85,10 +107,97 @@ https://hyperf.wiki/2.0/#/zh-cn/quick-start/overview
 	- \Hyperf\Utils\ApplicationContext::getContaienr()
 
 ## AOP
+- Aspect 可以切入任意类和注解类
 - 切入的类必须由 DI 管理
 - hyperf 里的 AOP 是基于 DI 实现的 (hyperf/di)
 - 必须通过 DI 创建的对象才能是 AOP 生效，直接new不行
 - 必须当代理类缓存文件不存在时才会重新生成代理类
+- 每个 切面(Aspect) 必须定义 @Aspect 注解或在 config/autoload/aspects.php 内配置均可发挥作用。
+
+### 基于 AOP 的功能
+- @Cacheable、@CachePut、@CacheEvict
+- @Task
+- @RateLimit
+- @CircuitBreaker
+- 调用链追踪的无侵入打点
+
+### 示例
+#### classes 形式
+```PHP
+<?php
+namespace App\Aspect;
+
+use App\Controller\IndexController;
+use Hyperf\Di\Annotation\Aspect;
+use Hyperf\Di\Aop\AbstractAspect;
+use Hyperf\Di\Aop\ProceedingJoinPoint;
+
+/**
+ * @Aspect()
+ * 注意要在切面类上增加 @Aspect() 注解，且要 use 相应的命名空间
+ */
+class FooAspect extends AbstractAspect
+{
+    public $classes = [
+    	//注意格式为 类名::方法名
+        IndexController::class . '::' . 'index',
+    ];
+
+    public $annotations = [
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    public function process(ProceedingJoinPoint $proceedingJoinPoint)
+    {
+        var_dump(__CLASS__);
+        $result = $proceedingJoinPoint->process();
+        return $result;
+    }
+}
+```
+
+#### 注解形式
+```PHP
+<?php
+namespace App\Aspect;
+
+use App\Annotation\Foo;
+use Hyperf\Di\Annotation\Aspect;
+use Hyperf\Di\Aop\AbstractAspect;
+use Hyperf\Di\Aop\ProceedingJoinPoint;
+
+/**
+ * @Aspect()
+ * 注意要在切面类上增加 @Aspect() 注解，且要 use 相应的命名空间
+ */
+class FooAspect extends AbstractAspect
+{
+    public $classes = [
+    ];
+
+    public $annotations = [
+    	//需要切入的注解
+    	//实际需要切入的类(或方法、属性等)上需要添加相应注解
+        Foo::class
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    public function process(ProceedingJoinPoint $proceedingJoinPoint)
+    {
+        $result = $proceedingJoinPoint->process();
+        /** @var Foo $foo */
+        $foo = $proceedingJoinPoint->getAnnotationMetadata()->class[Foo::class];	//该方法可以获取到代理后的实例
+        $bar = $foo->bar;
+        $result['message'] .= $bar;
+
+        return $result;
+    }
+}
+```
 
 ## 协程
 
