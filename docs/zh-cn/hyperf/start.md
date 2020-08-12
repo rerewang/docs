@@ -245,7 +245,98 @@ Swoole 的每个 Worker 进程 会存在一个协程调度器来调度协程，�
 - 获得当前协程的 ID
 	- Hyperf\Utils\Coroutine::id(): int //如不处于协程环境下，会返回 -1
 - 更多特性
-	- @todo
+	- Channel 通道
+		- Channel 可为多生产者协程和多消费者协程模式提供支持, 主要用于协程间通讯
+		- Channel->push : 当队列中有其他协程正在等待 pop 数据时，自动按顺序唤醒一个消费者协程。当队列已满时自动 yield 让出控制权，等待其他协程消费数据
+		- Channel->pop : 当队列为空时自动 yield，等待其他协程生产数据。消费数据后，队列可写入新的数据，自动按顺序唤醒一个生产者协程
+	- WaitGroup
+		- 使得主协程一直阻塞等待直到所有相关的子协程都已经完成了任务后再继续运行，这里说到的阻塞等待是仅对于主协程（即当前协程）来说的，并不会阻塞当前进程。
+	- Parallel
+		- Parallel 特性是 Hyperf 基于 WaitGroup 特性抽象出来的一个更便捷的使用方法
+		- 限制 Parallel 最大同时运行的协程数
+			- new Parallel(MAX_CO_NUM);
+	- Concurrent 协程运行控制
+		- @tod
+	- 协程上下文
+		- @todo
+	- Swoole Runtime Hook Level
+		- @todo
+	- defer
+		- @todo
+
+### 示例
+#### Channel
+```PHP
+co(function () {
+    $channel = new \Swoole\Coroutine\Channel();
+    co(function () use ($channel) {
+        $channel->push('data');
+    });
+    $data = $channel->pop();
+});
+```
+#### WaitGroup
+```PHP
+$wg = new \Hyperf\Utils\WaitGroup();
+// 计数器加二
+$wg->add(2);
+// 创建协程 A
+co(function () use ($wg) {
+    // some code
+    // 计数器减一
+    $wg->done();
+});
+// 创建协程 B
+co(function () use ($wg) {
+    // some code
+    // 计数器减一
+    $wg->done();
+});
+// 等待协程 A 和协程 B 运行完成
+$wg->wait();
+```
+#### Parallel
+```PHP
+<?php
+use Hyperf\Utils\Exception\ParallelExecutionException;
+use Hyperf\Utils\Coroutine;
+use Hyperf\Utils\Parallel;
+
+$parallel = new Parallel();
+$parallel->add(function () {
+    sleep(1);
+    return Coroutine::id();
+});
+$parallel->add(function () {
+    sleep(1);
+    return Coroutine::id();
+});
+
+try{
+    // $results 结果为 [1, 2]
+   $results = $parallel->wait(); 
+} catch(ParallelExecutionException $e){
+    // $e->getResults() 获取协程中的返回值。
+    // $e->getThrowables() 获取协程中出现的异常。
+}
+```
+#### parallel()
+```PHP
+<?php
+use Hyperf\Utils\Coroutine;
+
+// 传递的数组参数您也可以带上 key 便于区分子协程，返回的结果也会根据 key 返回对应的结果
+$result = parallel([
+    function () {
+        sleep(1);
+        return Coroutine::id();
+    },
+    function () {
+        sleep(1);
+        return Coroutine::id();
+    }
+]);
+```
 
 ## 配置
 
