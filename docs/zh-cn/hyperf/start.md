@@ -339,7 +339,72 @@ $result = parallel([
 ```
 
 ## 配置
+- 设置配置
+	- 在 config/config.php 与 config/autoload/server.php 与 autoload 文件夹内的配置
+- 获取配置
+	- 通过 Config 对象获取配置
+	- 通过 @Value 注解获取配置
+		- 这种方式要求注解的应用对象必须是通过 hyperf/di 组件创建的
+		- @Value("config.key")
+	- 通过 config 函数获取
+		- config(string $key, $default)
+- 环境变量
+	- env()
+
 
 ## 中间件
+### 原理
+- PSR15
+- 主要用于编织从 请求(Request) 到 响应(Response) 的整个流程，通过对多个中间件的组织，使数据的流动按我们预定的方式进行
+- 洋葱模型
+- Request -> Middleware 1 -> Middleware 2 -> Middleware 3 -> Middleware 2 -> Middleware 1 -> Response
+
+### 使用
+1. 生成中间件
+- php ./bin/hyperf.php gen:middleware Auth/FooMiddleware
+2. 定义中间件
+- 定义局部中间件
+	- 通过注解定义
+		- @Middleware 注解为定义单个中间件时使用，在一个地方仅可定义一个该注解，不可重复定义
+		- @Middlewares 注解为定义多个中间件时使用，在一个地方仅可定义一个该注解，然后通过在该注解内定义多个 @Middleware 注解实现多个中间件的定义
+		- 定义方法级别的中间件
+			- 将注解加在方法上即可
+			- 类级别上的中间件会优先于方法级别的中间件
+	- 通过配置文件定义
+		- Hyperf\HttpServer\Router\Router 类的每个定义路由的方法的最后一个参数 $options 都将接收一个数组，可通过传递键值 middleware 及一个数组值来定义该路由的中间件
+- 定义全局中间件
+	- 修改配置文件 config/autoload/middlewares.php 配置
+	- 全局中间件执行顺序优先于局部中间件
+	- ps: 实测全局定义了A中间件，又局部定义了A中间件，会导致局部定义的顺序在A中间件之后的其他中间件失效
+
+#### 示例
+```PHP
+//通过注解定义中间件
+<?php
+
+namespace App\Controller;
+
+use Hyperf\HttpServer\Annotation\AutoController;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Annotation\Middlewares;
+use App\Middleware\FooMiddleware;
+use App\Middleware\BarMiddleware;
+use App\Middleware\BazMiddleware;
+
+/**
+ * @AutoController()
+ * @Middlewares(
+ *     @Middleware(FooMiddleware::class),
+ *     @Middleware(BarMiddleware::class),
+ *     @Middleware(BazMiddleware::class)
+ * )
+ */
+class TestController
+{
+    public function index() {
+        return 'index';
+    }
+}
+```
 
 ## jsonRPC
